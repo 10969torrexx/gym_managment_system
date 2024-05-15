@@ -26,6 +26,7 @@
                   <h3><strong>Gym Shark</strong></h3>
                 </a>
                 <p class="text-center">{{ config('const.sub_name') }}</p>
+                <div class="p-1" id="message-alert"></div>
                 <div id="g_id_onload" data-client_id="{{env('GOOGLE_CLIENT_ID')}}" data-callback="onSignIn"></div>
                 <div class="g_id_signin form-control" data-type="standard"></div>
                 <form action="{{ route('login') }}" >
@@ -74,20 +75,28 @@
                 $.ajax({
                     url: `{{ route('googleLogin') }}`,
                     method: 'POST',
-                    data: {email: user.email},
+                    data: {
+                        email: user.email
+                    },
                     beforeSend: function(){
                         $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
                     },
                     success:function(response){
-                        console.log(response);
-                        if (response.status != 200) {
-                            $('#message-alert').html(' ');
-                            $('#message-alert').append(`
-                                <div class="alert alert-danger" role="alert">
-                                    ${response.message}
-                                </div>
-                            `);
-                            $('#btnLogin').html("Sign In").prop("disabled", false);
+                        switch (response.status) {
+                            case 200:
+                                window.location.href = '/home';
+                                break;
+                            case 500:
+                                $('#message-alert').html(' ');
+                                $('#message-alert').append(`
+                                    <div class="alert alert-danger" role="alert">
+                                        ${response.message}
+                                    </div>
+                                `);
+                                $('#btnLogin').html("Sign In").prop("disabled", false);
+                                break;
+                            default:
+                                break;
                         }
                     },
                     error:function(xhr, status, error){
