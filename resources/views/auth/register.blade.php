@@ -47,7 +47,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="disabledSelect" class="form-label">Role</label>
-                    <select id="disabledSelect" class="form-select">
+                    <select id="disabledSelect" name="role" class="form-select">
                         @foreach (config('const.role') as $item)
                             <option value="{{ ($loop->iteration) - 1 }}">{{ ucfirst(config('const.role.'.($loop->iteration) - 1)) }}</option>
                         @endforeach
