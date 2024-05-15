@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('role')->default(0);
+            $table->integer('fitness_level')->default(0);
             $table->string('picture')->nullable();
             $table->string('password');
             $table->rememberToken();
