@@ -5,5 +5,6 @@
         'role' => [
             'member',
             'instructor'
-        ]
+        ],
+        'fitness_level' => ['Beginner', 'Intermediate', 'Advanced', 'Elite/Athlete']
     ];
