@@ -47,9 +47,15 @@ class ExercisesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $exercises = Exercises::where('id', $request->id)->update([
+            'fitness_level' => $request->fitness_level
+        ]);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Exercises updated!'
+        ]);
     }
 
     /**
