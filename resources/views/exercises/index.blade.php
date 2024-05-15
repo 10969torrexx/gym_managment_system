@@ -48,7 +48,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->exercise_name }}</td>
                                 <td>
-                                    <select id="disabledSelect" name="fitness_level" class="form-select">
+                                    <select id="fitness_level" name="fitness_level" data-id="{{ $item->id }}" class="form-select">
                                         <option value="{{ ($item->fitness_level) }}">{{ config('const.fitness_level.'.($item->fitness_level)) }}</option>
                                         @foreach (config('const.fitness_level') as $data)
                                             <option value="{{ ($loop->iteration) -1 }}">{{ config('const.fitness_level.'.($loop->iteration) - 1) }}</option>
@@ -85,6 +85,30 @@
             },
             error:function(xhr, status, error){
             alert(xhr.responseJSON.message);
+            }
+        });
+    });
+
+    $(document).on('change', '#fitness_level', function() {
+       let id = $(this).data('id');
+       let fitness_level = $(this).val();
+        $.ajax({
+            url: `{{ route('exercisesUpdate') }}`,
+            method: 'POST',
+            data: {
+                id: id,
+                fitness_level : fitness_level
+            },
+            beforeSend: function(){
+                $('#btnLogin').html("REDIRECTING...").prop("disabled", true);
+            },
+            success:function(response){
+                if (response.status == 200) {
+                    location.reload();
+                }
+            },
+            error:function(xhr, status, error){
+                alert(xhr.responseJSON.message);
             }
         });
     });

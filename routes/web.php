@@ -21,4 +21,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('exercises/index', [ExercisesController::class, 'index'])->name('exercisesIndex');
     Route::post('exercises/store', [ExercisesController::class, 'store'])->name('exercisesStore');
     Route::post('exercises/destroy', [ExercisesController::class, 'destroy'])->name('exercisesDestroy');
+    Route::post('exercises/update', [ExercisesController::class, 'update'])->name('exercisesUpdate');
 });
