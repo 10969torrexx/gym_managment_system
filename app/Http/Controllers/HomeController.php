@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
        switch (Auth::user()->role) {
         case 0:
-            # code...
+            return redirect(route('usersIndex'));
             break;
         case 1:
             return redirect(route('exercisesIndex'));

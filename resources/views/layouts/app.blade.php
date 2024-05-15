@@ -20,7 +20,7 @@
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a href="{{ route('exercisesIndex') }}" class="text-nowrap logo-img">
+          <a href="{{ Auth::user()->role == 0 ? route('usersIndex') : route('exercisesIndex') }}" class="text-nowrap logo-img">
             <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -36,7 +36,14 @@
             </li>
             @switch(Auth::user()->role)
                 @case(0)
-                    
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-article"></i>
+                        </span>
+                        <span class="hide-menu">Fitness Goal</span>
+                        </a>
+                    </li>
                     @break
                 @case(1)
                     <li class="sidebar-item">

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleSignInController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\MembersController;
+use App\Http\Controllers\UsersController;
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -27,4 +28,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/index', [MembersController::class, 'index'])->name('membersIndex');
     Route::post('members/destroy', [MembersController::class, 'destroy'])->name('membersDestroy');
     Route::post('members/update', [MembersController::class, 'update'])->name('membersUpdate');
+
+    Route::get('users/index', [UsersController::class, 'index'])->name('usersIndex');
 });
