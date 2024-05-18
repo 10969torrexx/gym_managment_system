@@ -6,6 +6,7 @@ use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\OneTimePasswordController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -19,7 +20,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/google/signin', [GoogleSignInController::class, 'store'])->name('googleLogin');
 
-Route::get('otp/index', [OneTimePasswordController::class, 'index'])->name('otpIndex');
+Route::get('otp/index/{email}', [OneTimePasswordController::class, 'index'])->name('otpIndex');
+Route::post('users/register', [UsersController::class, 'register'])->name('usersRegister');
+
+Route::middleware(['throttle:5,1'])->group(function () {
+    Route::post('otp/verify', [OneTimePasswordController::class, 'verify'])->name('OtpVerify');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('exercises/index', [ExercisesController::class, 'index'])->name('exercisesIndex');

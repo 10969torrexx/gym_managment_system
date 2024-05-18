@@ -60,7 +60,7 @@
                                 </td>
                                 <td>{{ date('M, d, Y H:i:s', strtotime($item->created_at)) }}</td>
                                 <td>
-                                    <button type="button" id="delete_exercise" data-id="{{ $item->id }}" class="btn btn-outline-danger m-1">Danger</button>
+                                    <button type="button" id="delete_exercise" data-id="{{ $item->id }}" class="btn btn-outline-danger m-1">Delete</button>
                                 </td>
                             </tr>
                         @endforeach

@@ -23,8 +23,8 @@
                         @foreach ($members as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->email }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->email }}</td>
                                 <td>
                                     <select id="fitness_level" name="fitness_level" data-id="{{ $item->id }}" class="form-select">
                                         <option value="{{ ($item->fitness_level) }}">{{ config('const.fitness_level.'.($item->fitness_level)) }}</option>
@@ -35,7 +35,7 @@
                                 </td>
                                 <td>{{ date('M, d, Y', strtotime($item->created_at)) }}</td>
                                 <td>
-                                    <button type="button" id="delete_exercise" data-id="{{ $item->id }}" class="btn btn-outline-danger m-1">Danger</button>
+                                    <button type="button" id="delete_exercise" data-id="{{ $item->id }}" class="btn btn-outline-danger m-1">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
