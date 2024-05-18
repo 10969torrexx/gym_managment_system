@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Register - Gym Shark</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,7 +26,7 @@
                     <h3><strong>{{ config('const.app_name') }}</strong></h3>
                 </a>
                 <p class="text-center">{{ config('const.sub_name') }}</p>
-                <form action="{{ route('register') }}" method="POST"> @csrf
+                <form action="{{ route('usersRegister') }}" method="POST"> @csrf
                   <div class="mb-3">
                     <label for="exampleInputtext1" class="form-label">Name</label>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
