@@ -23,9 +23,9 @@ Route::post('/google/signin', [GoogleSignInController::class, 'store'])->name('g
 Route::get('otp/index/{email}', [OneTimePasswordController::class, 'index'])->name('otpIndex');
 Route::post('users/register', [UsersController::class, 'register'])->name('usersRegister');
 
-Route::middleware(['throttle:5,1'])->group(function () {
+Route::middleware(['throttle:3,1'])->group(function () {
     Route::post('otp/verify', [OneTimePasswordController::class, 'verify'])->name('OtpVerify');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/login', [UsersController::class, 'login'])->name('usersLogin');
 });
 
 Route::middleware(['auth'])->group(function () {
