@@ -43,6 +43,26 @@ class UsersController extends Controller
         return redirect()->route('otpIndex', ['email' => $request->email]);
     }
 
+    public function login(Request $request) {
+        $request->validate([
+            'email' => ['required'],
+            'password' => ['required']
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if ($user && password_verify($request->password, $user->password)) {
+            Auth::login($user);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Login successful',
+                'account' => $user
+            ]);
+        }
+        return response()->json([
+            'status' => 300,
+            'message' => 'Invalid email or password'
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */

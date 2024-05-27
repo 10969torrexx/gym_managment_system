@@ -29,7 +29,7 @@
                 <div class="p-1" id="message-alert"></div>
                 <div id="g_id_onload" data-client_id="{{env('GOOGLE_CLIENT_ID')}}" data-callback="onSignIn"></div>
                 <div class="g_id_signin form-control" data-type="standard"></div>
-                <form action="{{ route('login') }}" method="POST"> @csrf
+                <form action="" method="POST">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Username</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -48,7 +48,9 @@
                         </span>
                     @enderror
                   </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
+                  <button type="button" id="btnLogin" class="btn btn-primary w-100 py-8 fs-4 mb-1 rounded-2">Sign In</button>
+                  <div class="p-1 text-danger mb-2" id="message_attempt">
+                  </div>
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
                     <a class="text-primary fw-bold ms-2" href="{{ route('register') }}">Create an account</a>
@@ -115,6 +117,73 @@
                 });
             }
         }
+
+        var loginAttempts = 3
+        $('#btnLogin').on('click', function() {
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            $.ajaxSetup({
+                headers: {  'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') }
+            });
+            $.ajax({
+                url: `{{ route('usersLogin') }}`,
+                method: 'POST',
+                data: {
+                    email: email,
+                    password: password
+                },
+                beforeSend: function(){
+                    $('#btnLogin').html("LOADING...").prop("disabled", true);
+                },
+                success:function(response){
+                    if(response.status == 200) {
+                        $('#message-alert').html(' ');
+                        $('#message-alert').append(`
+                            <div class="alert alert-success" role="alert">
+                                ${response.message}
+                            </div>
+                        `);
+                        setTimeout(function() {
+                            $('#btnLogin').html("Login").prop("disabled", false);
+                            window.location.href ="/home";
+                        }, 2000);
+                    }
+                    if (response.status == 300) {
+                        $('#btnLogin').html("Login").prop("disabled", false);
+                        $('#message-alert').html(' ');
+                        $('#message-alert').append(`
+                            <div class="alert alert-danger" role="alert">
+                                ${response.message}
+                            </div>
+                        `);
+                        loginAttempts--;
+                        if (loginAttempts > 0) {
+                            console.log("Remaining login attempts: " + loginAttempts);
+                            $('#message_attempt').html("Remaining login attempts: " + loginAttempts);
+                        } else {
+                            console.log("No remaining login attempts. Please try again later.");
+                            $('#loginbutton').prop("disabled", true); // Disable the login button
+                        }
+                    }
+                },
+                error:function(xhr, status, error){
+                    var countdown = 60;
+                    var intervalId = setInterval(function() {
+                        if(countdown <= 0) {
+                            clearInterval(intervalId);
+                            loginAttempts = 5;
+                            $('#message_attempt').html("");
+                            $('#btnLogin').html("Login").prop("disabled", false);
+                        } else {
+                            $('#btnLogin').html("Please wait").prop("disabled", true);
+                            countdown--;
+                            $('#message_attempt').html(`Too many login attempts. Please try again in ${countdown} seconds`);
+                        }
+                    }, 1000);
+                }
+            });
+        });
     </script>
 </body>
 
